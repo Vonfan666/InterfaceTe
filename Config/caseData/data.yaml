@@ -1,0 +1,102 @@
+defualt:
+  caseMethodName : 阿里巴巴1
+  url : https://mock.presstime.cn/mock/62e7a0524d5d85005786d17e/example/fengfan
+  type: get
+  header :
+      Accept: application/json, */*
+      Content-Type: application/json
+  data :
+    name :  fengfan
+  asserDict :
+    status : 200
+    data :
+      name : fengfan
+
+login:
+  caseMethodName : 阿里巴巴2
+  url : https://mock.presstime.cn/mock/62e7a0524d5d85005786d17e/example/fengfan/index
+  type : post
+  header :
+    Accept: application/json, */*
+    Content-Type: application/json
+  data :
+    name :  fengfan
+  asserDict :
+    status : 200
+    data :
+      name : fengfan
+
+
+login2:
+  caseMethodName : 获取用户积分及券列表
+  url : https://mock.presstime.cn/mock/62e7a0524d5d85005786d17e/example/fengfan/index
+  type : get
+  header :
+    Accept: application/json, */*
+    Content-Type: application/json
+  data :
+    name :  fengfan1
+  asserDict :
+    status : 200
+    data :
+      name : fengfan
+
+
+login3:
+  caseMethodName : 返回不可用优惠券列表
+  url : https://mock.presstime.cn/mock/62e7a0524d5d85005786d17e/example/fengfan/index
+  type : post
+  header :
+    Accept: application/json, */*
+    Content-Type: application/json
+  data :
+    name :  fengfan1
+  asserDict :
+    status : 200
+    data :
+      name : fengfan
+
+login4:
+  caseMethodName : 优惠券最优推荐
+  url : https://mock.presstime.cn/mock/62e7a0524d5d85005786d17e/example/fengfan/index
+  type : post
+  header :
+    Accept: application/json, */*
+    Content-Type: application/json
+  data :
+    name :  fengfan1
+  asserDict :
+    status : 200
+    data :
+      name : 200
+
+login5:
+  caseMethodName : 获取优惠券列表
+  url : https://mock.presstime.cn/mock/62e7a0524d5d85005786d17e/example/fengfan/index
+  type : post
+  header :
+    Accept: application/json, */*
+    Content-Type: application/json
+  data :
+    name :  fengfan1
+  asserDict :
+    status : 200
+    data :
+      name : 200
+login6:
+  caseMethodName : 提交订单
+  url : https://mock.presstime.cn/mock/62e7a0524d5d85005786d17e/example/fengfan/index
+  type : post
+  header :
+    Accept: application/json, */*
+    Content-Type: application/json
+  data :
+    name :  fengfan1
+  asserDict :
+    status : 200
+    data :
+      name : 200
+
+
+
+
