@@ -1,6 +1,6 @@
  # coding:utf-8
 #! /usr/bin/python
-import  unittest,requests,HTMLTestRunner,time,os,threading
+import  unittest,requests,time,os,threading
 # from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 # from feng_test_method.feng_test_MethodCode import *
@@ -8,6 +8,7 @@ import  unittest,requests,HTMLTestRunner,time,os,threading
 import smtplib, os, re  # 发送库
 from email.mime.text import MIMEText  # 构建文本邮件库
 from email.mime.multipart import MIMEMultipart
+from Config import HTMLTestRunner
 PATH = lambda  p:os.path.abspath(
        os.path.join(os.path.dirname(__file__),p)
 )
@@ -41,7 +42,7 @@ def allCase():
 
 # HTMLTestRunner
 import sys,datetime
-from HTMLTestRunner import _TestResult
+from Config.HTMLTestRunner import _TestResult
 class  HTMLTestRunnerNew(HTMLTestRunner.HTMLTestRunner):
     def __init__(self,stream=sys.stdout, verbosity=1, title=None, description=None,result=None):
 

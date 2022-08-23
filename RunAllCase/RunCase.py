@@ -1,14 +1,15 @@
  # coding:utf-8
 #! /usr/bin/python
 
-import  unittest,requests,HTMLTestRunner,time,os
+import  unittest,requests,time,os
 # from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 # from feng_test_method.feng_test_MethodCode import *
 # from appium import webdriver
 import smtplib, os, re  # 发送库
-from email.mime.text import MIMEText  # 构建文本邮件库
-from email.mime.multipart import MIMEMultipart
+# from email.mime.text import MIMEText  # 构建文本邮件库
+# from email.mime.multipart import MIMEMultipart
+from Config import HTMLTestRunner
 PATH = lambda  p:os.path.abspath(
        os.path.join(os.path.dirname(__file__),p)
 )

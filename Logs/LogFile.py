@@ -4,7 +4,6 @@ import logging.config
 import logging.handlers
 def Log():
     logging.config.fileConfig(os.path.dirname(os.path.dirname(__file__))+'/Config/myLog.conf')  # 该路径是调用env下面的mylog日志配置文件
-
     logger = logging.getLogger(__name__)
     fmt = '[%(asctime)s](%(levelname)s)%(name)s : %(message)s\n'
     formartter = logging.Formatter(fmt)
@@ -26,6 +25,8 @@ def Log():
     return logging.getLogger()
 if  __name__ == '__main__':
     Log()
+    print(os.path.dirname(os.path.dirname(__file__)))
+    print(__name__)
 
 
 

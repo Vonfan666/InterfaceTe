@@ -97,8 +97,8 @@ import sys
 import time
 import unittest
 from xml.sax import saxutils
-# from case.runCase import RunCaseAll
-from django_redis import get_redis_connection  as conn
+
+
 # ------------------------------------------------------------------------
 # The redirectors below are used to capture output during testing. Output
 # sent to sys.stdout and sys.stderr are automatically captured. However
@@ -109,24 +109,23 @@ from django_redis import get_redis_connection  as conn
 # e.g.
 #   >>> logging.basicConfig(stream=HTMLTestRunner.stdout_redirector)
 #   >>>
-tasks_key={"id":None}
-class OutputRedirector():
+
+class OutputRedirector(object):
     """ Wrapper to redirect stdout or stderr """
     def __init__(self, fp):
         self.fp = fp
-        self.logRedis = conn("log")
+
     def write(self, s):
         self.fp.write(s)
-        #
-        self.logRedis.rpush("log:%s" % (tasks_key["id"]), s)
+
     def writelines(self, lines):
         self.fp.writelines(lines)
 
     def flush(self):
         self.fp.flush()
 
-stdout_redirector = OutputRedirector(sys.stdout)   #重定向前保存在实例中的stdout
-stderr_redirector = OutputRedirector(sys.stderr)  #重定向前保存在实例中的stderr
+stdout_redirector = OutputRedirector(sys.stdout)
+stderr_redirector = OutputRedirector(sys.stderr)
 
 
 
@@ -803,7 +802,7 @@ a.popup_link:hover {
         <a onfocus='this.blur();' onclick="document.getElementById('div_%(tid)s').style.display = 'none' " >
            [x]</a>
         </div>
-        <pre style="overflow-y: hidden">
+        <pre>
         %(script_out)s
         </pre>
     </div>
@@ -933,17 +932,17 @@ a.popup_link:hover {
 
 TestResult = unittest.TestResult
 
-
 class _TestResult(TestResult):
     # note: _TestResult is a pure representation of results.
     # It lacks the output and reporting ability compares to unittest._TextTestResult.
 
     def __init__(self, verbosity=1):
         TestResult.__init__(self)
-
-        self.success_count = 0  #成功的数量
+        self.stdout0 = None
+        self.stderr0 = None
+        self.success_count = 0
         self.failure_count = 0
-        self.error_count = 0  #错误用例的数量--其实就是把TestResult下面的 eerors列表len一下
+        self.error_count = 0
         self.verbosity = verbosity
 
         # result is a list of result in 4 tuple
@@ -957,17 +956,15 @@ class _TestResult(TestResult):
 
 
     def startTest(self, test):
-        TestResult.startTest(self, test)  #这里调用TestResult的startTest
+        TestResult.startTest(self, test)
         # just one buffer for both stdout and stderr
-        #OutputRedirector 在这个类中定义sys.stdout-指向stdout_redirector下的fp属性，定义sys.stdeer指向stderr_redirector下的fp属性
-
-        self.outputBuffer= io.StringIO()  #定义一个操作内存缓冲区中读写数据的实例对象
-        stdout_redirector.fp = self.outputBuffer  #将sys.stdout重定向到磁盘io的缓存中--也就是说这里会重内存中取打印信息以及日志
-        stderr_redirector.fp = self.outputBuffer  # 将sys.stderr重定向到磁盘io缓存中--也就是说这里会重内存中取错误信息
-        self.stdout0 = sys.stdout  #记录标准输出原始位置
-        self.stderr0 = sys.stderr  #将标准错误输出指向None
-        sys.stdout = stdout_redirector    #恢复重定向--因为OutputRedirector(sys.stdout)--所以就是相当于修改了从新重定向了之前的位置
-        sys.stderr = stderr_redirector    #恢复重定向 --同上
+        self.outputBuffer= io.StringIO()
+        stdout_redirector.fp = self.outputBuffer
+        stderr_redirector.fp = self.outputBuffer
+        self.stdout0 = sys.stdout
+        self.stderr0 = sys.stderr
+        sys.stdout = stdout_redirector
+        sys.stderr = stderr_redirector
 
 
     def complete_output(self):
@@ -980,7 +977,6 @@ class _TestResult(TestResult):
             sys.stderr = self.stderr0
             self.stdout0 = None
             self.stderr0 = None
-
         return self.outputBuffer.getvalue()
 
 
@@ -1033,10 +1029,9 @@ class _TestResult(TestResult):
 class HTMLTestRunner(Template_mixin):
     """
     """
-    def __init__(self, stream=sys.stdout, verbosity=1, title=None, description=None,key=None):
+    def __init__(self, stream=sys.stdout, verbosity=1, title=None, description=None):
         self.stream = stream
         self.verbosity = verbosity
-        tasks_key["id"] = key
         if title is None:
             self.title = self.DEFAULT_TITLE
         else:
@@ -1050,9 +1045,7 @@ class HTMLTestRunner(Template_mixin):
 
 
     def run(self, test, caseinfo={}):
-
         "Run the given test case or test suite."
-
         result = _TestResult(self.verbosity)
         test(result)
         self.stopTime = datetime.datetime.now()
@@ -1081,7 +1074,6 @@ class HTMLTestRunner(Template_mixin):
         Return report attributes as a list of (name, value).
         Override this to add custom attributes.
         """
-        self.runCase=result   #新增一个实例变量--通过在执行用例时通过它去找用例执行成功失败断言数量
         startTime = str(self.startTime)[:19]
         duration = str(self.stopTime - self.startTime)
         status = []

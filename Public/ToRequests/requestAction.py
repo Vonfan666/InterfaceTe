@@ -2,7 +2,7 @@
 
 import requests,json,urllib3
 
-requests.packages.urllib3.disable_warnings()
+urllib3.disable_warnings()
 class ReqClass(object):
     def __init__(self,url,header=None,data=None):
         self.url=url
